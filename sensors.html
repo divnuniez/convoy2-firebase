@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+  <head>
+        <meta charset="utf-8">
+        <title>Sensors</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script type="text/javascript" src="//pubnub.github.io/eon/v/eon/1.0.0/eon.js"></script>
+	<link type="text/css" rel="stylesheet" href="//pubnub.github.io/eon/v/eon/1.0.0/eon.css"/>
+ 
+
+	<script>
+	//initialize PubNub
+	var pubnub = new PubNub({
+  	publishKey: 'pub-c-742122a4-c75e-4f8b-8964-5d0f22da62a8',
+  	subscribeKey: 'sub-c-340c4b82-57d9-11e7-b679-0619f8945a4f'
+	}); </script>
+
+	
+	<style>
+	
+	body {
+	    transition: background-color .5s;
+	}
+	
+	
+	h1 { 
+	    color: #2980B9;
+	    text-align:center;
+	    display: block;
+	    font-size: 8em;
+	    margin-top: 0.2em;
+	    margin-bottom: 0.3em;
+	    margin-left: 100;
+	    margin-right: 100;
+	    font-weight: bold;
+	}
+	
+	h3 { 
+	    color: gray;
+	    text-align:center;
+	    font-weight: bold;
+	    vertical-align: center;
+	     font-size: 2.2em;
+	}
+	
+	p {
+		color: white;
+	}
+	
+	div {
+		color:gray;
+		font-weight: bold;
+
+	}
+	
+	
+	
+	
+	.overlay {
+	    height: 100%;
+	    width: 0;
+	    position: fixed;
+	    z-index: 1;
+	    top: 0;
+	    left: 0;
+	    background-color: rgb(0,0,0);
+	    background-color: rgba(0,0,0, 0.9);
+	    overflow-x: hidden;
+	    transition: 0.5s;
+	}
+
+	.overlay-content {
+	    position: relative;
+	    top: 25%;
+	    width: 100%;
+	    text-align: center;
+	    margin-top: 30px;
+	}
+
+	.overlay a {
+	    padding: 8px;
+	    text-decoration: none;
+	    font-size: 36px;
+	    color: #2980B9;
+	    display: block;
+	    transition: 0.3s;
+	}
+
+	.overlay a:hover, .overlay a:focus {
+	    color: #f1f1f1;
+	}
+
+	.overlay .closebtn {
+	    position: absolute;
+	    top: 20px;
+	    right: 45px;
+	    font-size: 60px;
+	}
+
+	@media screen and (max-height: 450px) {
+	  .overlay a {font-size: 20px}
+	  .overlay .closebtn {
+	    font-size: 40px;
+	    top: 15px;
+	    right: 35px;
+	  }}
+
+	
+	</style>
+ </head>
+
+
+ <body style="background-color:#ffffff;">
+	
+		<h1>convoy </h1>
+		
+	<div id="myNav" class="overlay">
+	  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+	  <div class="overlay-content">
+	    <a href="index.html">Home</a>
+		<a href="gpio.html">GPIOs</a>
+	    <a href="sensors.html">Sensors</a>
+	    <a href="video.html">Video</a>
+	    <a href="5">Audio</a>
+	    <a href="6">About</a>
+	  </div>
+	</div>
+	
+	<span style="font-size:55px;cursor:pointer;color:#2980B9;position:relative;left:30px;top:-120px;"onclick="openNav()">&#9776;</span>
+	
+
+<div id="gauge_container" style="width:700px;height:320px; margin:auto; text-align:center;position:relative; top:-150px; ">
+<div id="gauge1" style="height:300px; width:300px;  display:inline-block; margin:auto"></div>
+<div id="gauge2" style="height:300px; width:300px; display:inline-block; margin:auto"></div>
+</div>
+
+<div id="xyline1" style="height:350px; width:800px; margin:auto; align:top"></div>
+<div id="xyline2" style="height:350px; width:800px; margin:auto;align:top"></div>
+
+
+<script>
+//temperature chart
+eon.chart({
+  channels: ['tempeon'],
+  flow: true,
+  pubnub: pubnub,
+  limit: 20,  
+  generate: {
+      bindto: '#xyline1',
+      data: { type:'spline', labels: true },
+      axis: {x:{type: 'timeseries', tick: {format: '%H:%m:%S',fit: true},label: { text: 'Temperature over time'}},
+	     y: { label: { text: 'DegC',position: 'outer-middle'}, max:35, min:15}}
+	    },
+  history:true,
+});
+
+//temperature gauge
+eon.chart({
+  channels: ['tempeon'],
+  pubnub: pubnub,
+  generate: {
+  bindto: '#gauge1',
+  data: { type:'gauge' },
+  gauge: {
+          label: {
+              format: function(value, ratio) {
+                  return value;
+              },
+  //            show: false // to turn off the min/max labels.
+          },
+          min: 15, // 0 is default, //can handle negative min e.g. vacuum / voltage / current flow / rate of change
+          max: 35, // 100 is default
+          units: 'Deg C',
+  //      width: 39 // for adjusting arc thickness
+        },
+  //color: { pattern: ['#FF0000', '#F6C600', '#60B044'], threshold: { values: [20, 25, 30]} }
+  }
+});
+
+   
+//humidity chart
+eon.chart({
+  channels: ['humeon'],
+  history: true,
+  flow: true,
+  pubnub: pubnub,
+  limit: 20,  
+  generate: {
+     bindto: '#xyline2',
+      data: { type:'spline', labels: true },
+      data: { type:'spline', labels: true },
+      axis: {x:{type: 'timeseries', tick: {format: '%H:%m:%S',fit: true},label: { text: 'Humidity over time'}},
+             y: { label: { text: '% Hum',position: 'outer-middle'}, max:70, min:30}} 
+  }
+});
+
+//humidity gauge
+eon.chart({
+  channels: ['humeon'],
+  pubnub: pubnub,
+  generate: {
+  bindto: '#gauge2',
+  data: { type:'gauge' },
+  gauge: {min:30,max:70, units: 'Hum'},
+ // color: { pattern: ['#FF0000', '#F6C600', '#60B044'], threshold: {values: [30, 45, 60]} }
+  }
+});
+ 
+</script>
+
+<script>
+
+	function openNav() {
+	    document.getElementById("myNav").style.width = "20%";
+		document.body.style.backgroundColor = "#ffffff";
+	}
+
+	function closeNav() {
+	    document.getElementById("myNav").style.width = "0%";
+		document.body.style.backgroundColor = "#ffffff";
+	}
+</script>
+
+</body>
+</html>

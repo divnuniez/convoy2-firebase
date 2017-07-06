@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>GPIO ctrl</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.1.1/firebase.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.1.1/firebase.js"></script>
+	<script>
+	  // Initialize Firebase
+	  var config = {
+	    apiKey: "AIzaSyC-gs-UnkzdCcgAqy3FxeM2HlWFuD_DktA",
+	    authDomain: "convoy2-d8d0a.firebaseapp.com",
+	    databaseURL: "https://convoy2-d8d0a.firebaseio.com",
+	    projectId: "convoy2-d8d0a",
+	    storageBucket: "convoy2-d8d0a.appspot.com",
+	    messagingSenderId: "440649103232"
+	  };
+	  firebase.initializeApp(config);
+	</script>
+	
+	<style>
+	
+	body {
+	    transition: background-color .5s;
+	}
+	
+	
+	h1 { 
+	    color: #0099ff;
+		text-align:center;
+		display: block;
+	    font-size: 8em;
+	    margin-top: 0.2em;
+	    margin-bottom: -.2em;
+	    margin-left: 100;
+	    margin-right: 100;
+	    font-weight: bold;
+	}
+	
+	h3 { 
+		color: gray;
+		text-align:center;
+	    font-weight: bold;
+		vertical-align: center;
+		 font-size: 2.2em;
+	}
+	
+	div {
+		color:gray;
+		background:black;
+		font-weight: bold;
+	}
+	
+	.switch {
+	  position: relative;
+	  display: inline-block;
+	  width: 60px;
+	  height: 34px;
+	}
+
+	.switch input {display:none;}
+
+	.slider {
+	  position: absolute;
+	  cursor: pointer;
+	  top: 0;
+	  left: 0;
+	  right: 0;
+	  bottom: 0;
+	  background-color: #ccc;
+	  -webkit-transition: .4s;
+	  transition: .4s;
+	}
+
+	.slider:before {
+	  position: absolute;
+	  content: "";
+	  height: 26px;
+	  width: 26px;
+	  left: 4px;
+	  bottom: 4px;
+	  background-color: white;
+	  -webkit-transition: .4s;
+	  transition: .4s;
+	}
+
+	input:checked + .slider {
+	  background-color: #2196F3;
+	}
+
+	input:focus + .slider {
+	  box-shadow: 0 0 1px #2196F3;
+	}
+
+	input:checked + .slider:before {
+	  -webkit-transform: translateX(26px);
+	  -ms-transform: translateX(26px);
+	  transform: translateX(26px);
+	}
+
+	/* Rounded sliders */
+	.slider.round {
+	  border-radius: 34px;
+	}
+
+	.slider.round:before {
+	  border-radius: 50%;
+	}
+	
+	
+	.overlay {
+	    height: 100%;
+	    width: 0;
+	    position: fixed;
+	    z-index: 1;
+	    top: 0;
+	    left: 0;
+	    background-color: rgb(0,0,0);
+	    background-color: rgba(0,0,0, 0.9);
+	    overflow-x: hidden;
+	    transition: 0.5s;
+	}
+
+	.overlay-content {
+	    position: relative;
+	    top: 25%;
+	    width: 100%;
+	    text-align: center;
+	    margin-top: 30px;
+	}
+
+	.overlay a {
+	    padding: 8px;
+	    text-decoration: none;
+	    font-size: 36px;
+	    color: #818181;
+	    display: block;
+	    transition: 0.3s;
+	}
+
+	.overlay a:hover, .overlay a:focus {
+	    color: #f1f1f1;
+	}
+
+	.overlay .closebtn {
+	    position: absolute;
+	    top: 20px;
+	    right: 45px;
+	    font-size: 60px;
+	}
+
+	@media screen and (max-height: 450px) {
+	  .overlay a {font-size: 20px}
+	  .overlay .closebtn {
+	    font-size: 40px;
+	    top: 15px;
+	    right: 35px;
+	  }}
+	
+	</style>
+</head>
+
+
+	
+	  <body style="background-color:#000000;">
+	
+		<h1>convoy </h1>
+		
+	<div id="myNav" class="overlay">
+	  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+	  <div class="overlay-content">
+	    <a href="index.html">Home</a>
+		<a href="gpio.html">GPIOs</a>
+	    <a href="sensors.html">Sensors</a>
+	    <a href="video.html">Video</a>
+	    <a href="5">Audio</a>
+	    <a href="6">About</a>
+	  </div>
+	</div>
+
+	<span style="font-size:55px;cursor:pointer;color:#0099ff;position:relative;left:30px;top:-120px;"onclick="openNav()">&#9776;</span>
+
+	<script>
+	function openNav() {
+	    document.getElementById("myNav").style.width = "20%";
+		document.body.style.backgroundColor = "#1a1a1a";
+	}
+
+	function closeNav() {
+	    document.getElementById("myNav").style.width = "0%";
+		document.body.style.backgroundColor = "#000000";
+	}
+	</script>
+
+<?php
+exec('cd /my_python');
+exec('sudo python gpio_pyrebase.py');
+?>
+   	
+	               		<h3> GPIO1 &nbsp;
+						<label class="switch" >	
+						  <input type="checkbox" id="checkGPIO1"> 
+						  <div class="slider round"></div>
+						</label> <br><h3>
+						
+					 	<h3> GPIO2 &nbsp;
+						<label class="switch" >	
+						  <input type="checkbox" id="checkGPIO2"> 
+						  <div class="slider round"></div>
+						</label> <br> <h3>
+						
+						<h3> GPIO3 &nbsp;
+						<label class="switch" >	
+						  <input type="checkbox" id="checkGPIO3"> 
+						  <div class="slider round"></div>
+						</label> <br><h3>
+						
+						<h3> GPIO4 &nbsp;
+						<label class="switch" >	
+						<input type="checkbox" id="checkGPIO4"> 
+						<div class="slider round"></div>
+						</label> <br><h3>
+						
+						<h3> GPIO5 &nbsp;
+						<label class="switch" >	
+						<input type="checkbox" id="checkGPIO5"> 
+						<div class="slider round"></div>
+						</label> <br><h3>
+						
+						<h3> GPIO6 &nbsp;
+						<label class="switch" >	
+						<input type="checkbox" id="checkGPIO6"> 
+						<div class="slider round"></div>
+						</label> <br><h3>
+						
+						<h3> GPIO7 &nbsp;
+						<label class="switch" >	
+						<input type="checkbox" id="checkGPIO7"> 
+						<div class="slider round"></div>
+						</label> <br><h3>
+	
+	
+	  <script>
+	/*
+	  Esqueleto de la BD
+	  var db = firebase.database().ref('home').set({
+	    led1:true,
+	    led2:true
+	  });
+	*/
+	var db = firebase.database().ref('home');
+
+	// last status
+	db.on('value', function(data){
+	   console.log("data: ", data.val());
+	   $("#checkGPIO1").prop('checked', data.val().gpio1);
+	   $("#checkGPIO2").prop('checked', data.val().gpio2);
+	   $("#checkGPIO3").prop('checked', data.val().gpio3);
+	   $("#checkGPIO4").prop('checked', data.val().gpio4);
+	   $("#checkGPIO5").prop('checked', data.val().gpio5);
+	   $("#checkGPIO6").prop('checked', data.val().gpio6);
+	   $("#checkGPIO7").prop('checked', data.val().gpio7);
+	});
+	
+   //update status	
+	$("#checkGPIO1").click(function(){
+	  var estado = $(this).is(':checked');
+	  db.update({
+	    gpio1:estado
+	  });
+	});
+	
+	$("#checkGPIO2").click(function(){
+	  var estado = $(this).is(':checked');
+	  db.update({
+	    gpio2:estado
+	  });
+	});
+	
+	$("#checkGPIO3").click(function(){
+	  var estado = $(this).is(':checked');
+	  db.update({
+	    gpio3:estado
+	  });
+	});
+	
+	$("#checkGPIO4").click(function(){
+	  var estado = $(this).is(':checked');
+	  db.update({
+	    gpio4:estado
+	  });
+	});
+	
+	$("#checkGPIO5").click(function(){
+	  var estado = $(this).is(':checked');
+	  db.update({
+	    gpio5:estado
+	  });
+	});
+	
+	$("#checkGPIO6").click(function(){
+	  var estado = $(this).is(':checked');
+	  db.update({
+	    gpio6:estado
+	  });
+	});
+	
+	$("#checkGPIO7").click(function(){
+	  var estado = $(this).is(':checked');
+	  db.update({
+	    gpio7:estado
+	  });
+	});
+	  </script>
+  </body>
+</html>
+

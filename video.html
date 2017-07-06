@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>video</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+
+        <style>
+
+            body {
+                transition: background-color .5s;
+            }
+
+
+            h1 { 
+                color: #0099ff;
+                text-align:center;
+                display: block;
+                font-size: 8em;
+                margin-top: 0.2em;
+                margin-bottom: 0.3em;
+                margin-left: 100;
+                margin-right: 100;
+                font-weight: bold;
+            }
+
+            h3 { 
+                color: gray;
+                text-align:center;
+                font-weight: bold;
+                vertical-align: center;
+                font-size: 2.2em;
+            }
+
+            p {
+                color: white;
+            }
+
+            div {
+                color:gray;
+                background:black;
+                font-weight: bold;
+            }
+
+
+
+
+            .overlay {
+                height: 100%;
+                width: 0;
+                position: fixed;
+                z-index: 1;
+                top: 0;
+                left: 0;
+                background-color: rgb(0,0,0);
+                background-color: rgba(0,0,0, 0.9);
+                overflow-x: hidden;
+                transition: 0.5s;
+            }
+
+            .overlay-content {
+                position: relative;
+                top: 25%;
+                width: 100%;
+                text-align: center;
+                margin-top: 30px;
+            }
+
+            .overlay a {
+                padding: 8px;
+                text-decoration: none;
+                font-size: 36px;
+                color: #818181;
+                display: block;
+                transition: 0.3s;
+            }
+
+            .overlay a:hover, .overlay a:focus {
+                color: #f1f1f1;
+            }
+
+            .overlay .closebtn {
+                position: absolute;
+                top: 20px;
+                right: 45px;
+                font-size: 60px;
+            }
+
+            @media screen and (max-height: 450px) {
+                .overlay a {font-size: 20px}
+                .overlay .closebtn {
+                    font-size: 40px;
+                    top: 15px;
+                    right: 35px;
+                }}
+
+        </style>
+
+    <body style="background-color:#000000;">
+
+        <h1>convoy </h1>
+
+        <span style="font-size:55px;cursor:pointer;color:#0099ff;position:relative;left:30px;top:-170px;"onclick="openNav()">&#9776;</span>
+
+        <div id="myNav" class="overlay">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <div class="overlay-content">
+                <a href="index.html">Home</a>
+                <a href="gpio.html">GPIOs</a>
+                <a href="sensors.html">Sensors</a>
+                <a href="video.html">Video</a>
+                <a href="5">Audio</a>
+                <a href="6">About</a>
+            </div>
+        </div>
+
+
+        <div align= "center">
+            <iframe src= "http://www.convoypattern.com:9000/javascript_simple.html" align:"left" width="640" height="480" frameborder="1">
+                    <p>Your browser does not support iframes.</p>
+            </iframe>
+        </div>
+
+        <br>
+
+        <div align="center">
+            <embed src="http://www.convoypattern.com:9000/javascript_simple.html" width="640" height="480">
+        </div>
+
+        <br>
+
+        <div align="center">
+            <object data="http://www.convoypattern.com:9000/javascript_simple.html" width="640" height="480">
+                <embed src="http://www.convoypattern.com:9000/javascript_simple.html" width="640" height="480"> </embed>
+                Error: Embedded data could not be displayed.
+            </object>
+        </div>
+
+        <script>
+            function openNav() {
+                document.getElementById("myNav").style.width = "20%";
+                document.body.style.backgroundColor = "#1a1a1a";
+            }
+
+            function closeNav() {
+                document.getElementById("myNav").style.width = "0%";
+                document.body.style.backgroundColor = "#000000";
+            }
+        </script>
+
+    </body>
+</html>
+
+
+
+
+
+
+
